@@ -1,9 +1,9 @@
-.PHONY: deps clean build start help
+.PHONY: mod clean build start help
 
 # Show usage if no option
 .DEFAULT_GOAL := help
 
-deps: ## Get dependencies
+mod: ## Get dependencies
 	go get -u ./...
 
 clean: ## Remove binary
