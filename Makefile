@@ -1,4 +1,4 @@
-.PHONY: mod clean build start help
+.PHONY: mod clean build start d-start d-stop dynamodb-admin help
 
 # Show usage if no option
 .DEFAULT_GOAL := help
