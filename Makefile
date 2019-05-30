@@ -22,7 +22,7 @@ d-stop: ## Treminate DynamoDB local
 	docker-compose down
 
 pre-admin:
-	@if [ -z `which dynamodb-admin2 2> /dev/null` ]; then \
+	@if [ -z `which dynamodb-admin 2> /dev/null` ]; then \
 		echo "Need to install dynamodb-admin, execute \"npm install dynamodb-admin -g\"";\
 		exit 1;\
 	fi
