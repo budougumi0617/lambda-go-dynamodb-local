@@ -1,0 +1,19 @@
+{
+    "AttributeDefinitions": [
+        {
+            "AttributeName": "Id",
+            "AttributeType": "N"
+        }
+    ],
+    "TableName": "User",
+    "KeySchema": [
+        {
+            "AttributeName": "Id",
+            "KeyType": "HASH"
+        }
+    ],
+    "ProvisionedThroughput": {
+        "ReadCapacityUnits": 2,
+        "WriteCapacityUnits": 2
+    }
+}

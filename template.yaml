@@ -27,6 +27,15 @@ Resources:
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
         Variables:
           PARAM1: VALUE
+  UserDynamoDBTable:
+    Type: AWS::Serverless::SimpleTable # DyanmoDB resource
+    Properties:
+      PrimaryKey:
+        Name: Id
+        Type: Number
+      ProvisionedThroughput:
+        ReadCapacityUnits: 2
+        WriteCapacityUnits: 2
 
 Outputs:
   HelloWorldAPI:

@@ -12,7 +12,7 @@ clean: ## Remove binary
 build: ## Build binary
 	GOOS=linux GOARCH=amd64 go build -o hello-world/hello-world ./hello-world
 
-start: build ## Start Lambda on localhost
+start: build ## Start Lambda and API Gateway on localhost
 	sam local start-api # or start-lambda
 
 d-start: ## Boot DynamoDB local
@@ -29,6 +29,9 @@ pre-admin:
 
 dynamodb-admin: pre-admin ## Start DaynamoDB GUI
 	DYNAMO_ENDPOINT=http://localhost:18000 dynamodb-admin
+
+create-table:
+	aws dynamodb create-table --cli-input-json file://db/create_user_table.json --endpoint-url http://localhost:18000
 
 help: ## Show options
 	@grep -E '^[a-zA-Z_\.-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
