@@ -15,7 +15,7 @@ build: ## Build binary
 	GOOS=linux GOARCH=amd64 go build -o user/user ./user
 
 start: build ## Start Lambda and API Gateway on localhost
-	sam local start-api # or start-lambda
+	sam local start-api --env-vars db/env.json # or start-lambda
 
 d-start: ## Boot DynamoDB local
 	docker-compose up -d

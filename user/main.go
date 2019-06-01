@@ -29,7 +29,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	// DynamoDB
 	sess := session.Must(session.NewSession())
-	config := aws.NewConfig().WithRegion("us-east-1")
+	config := aws.NewConfig().WithRegion("ap-northeast-1")
 	if len(endpoint) > 0 {
 		config = config.WithEndpoint(endpoint)
 	}
