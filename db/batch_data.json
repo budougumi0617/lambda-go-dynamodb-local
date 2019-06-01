@@ -1,0 +1,28 @@
+{
+    "User": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": { "N": "1" },
+                    "Name": { "S": "Alice" }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": { "N": "2" },
+                    "Name": { "S": "Bob" }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": { "N": "3" },
+                    "Name": { "S": "Carol" }
+                }
+            }
+        }
+    ]
+}

@@ -1,4 +1,4 @@
-.PHONY: mod clean build start d-start d-stop dynamodb-admin help
+.PHONY: mod clean build start d-start d-stop dynamodb-admin create-table insert-data help
 
 # Show usage if no option
 .DEFAULT_GOAL := help
@@ -32,6 +32,9 @@ dynamodb-admin: pre-admin ## Start DaynamoDB GUI
 
 create-table:
 	aws dynamodb create-table --cli-input-json file://db/create_user_table.json --endpoint-url http://localhost:18000
+
+insert-data:
+	aws dynamodb batch-write-item --request-items file://db/batch_data.json --endpoint-url http://localhost:18000
 
 help: ## Show options
 	@grep -E '^[a-zA-Z_\.-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
