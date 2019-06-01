@@ -27,6 +27,24 @@ Resources:
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
         Variables:
           PARAM1: VALUE
+  UserGetFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: user/
+      Handler: user
+      Runtime: go1.x
+      Tracing: Active # https://docs.aws.amazon.com/lambda/latest/dg/lambda-x-ray.html
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetUser:
+          Type: Api
+          Properties:
+            Path: /users/{id}
+            Method: GET
+      Environment:
+        Variables:
+          DYNAMODB_ENDPOINT: ""
+          DYNAMODB_TABLE_NAME: !Ref UserDynamoDBTable
   UserDynamoDBTable:
     Type: AWS::Serverless::SimpleTable # DyanmoDB resource
     Properties:

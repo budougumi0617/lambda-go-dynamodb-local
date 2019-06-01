@@ -8,9 +8,11 @@ mod: ## Get dependencies
 
 clean: ## Remove binary
 	rm -rf ./hello-world/hello-world
+	rm -rf ./user/user
 	
 build: ## Build binary
 	GOOS=linux GOARCH=amd64 go build -o hello-world/hello-world ./hello-world
+	GOOS=linux GOARCH=amd64 go build -o user/user ./user
 
 start: build ## Start Lambda and API Gateway on localhost
 	sam local start-api # or start-lambda
