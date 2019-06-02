@@ -1,4 +1,8 @@
 # lambda-dynamodb-local
+[![CircleCI](https://circleci.com/gh/budougumi0617/lambda-go-dynamodb-local.svg?style=svg)][circleci]
+
+[circleci]:https://circleci.com/gh/budougumi0617/lambda-go-dynamodb-local
+
 Lambda and DynamoDB by SAM CLI
 
 This is a sample template for lambda-dynamodb-local - Below is a brief explanation of what we have generated for you:
