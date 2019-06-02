@@ -1,0 +1,66 @@
+version: 2.1
+executors:
+  default:
+    docker:
+      # CircleCI Go images available at: https://hub.docker.com/r/circleci/golang/
+      - image: circleci/golang:1.12.5
+      - image: amazon/dynamodb-local
+
+    working_directory: /go/src/github.com/budougumi0617/lambda-go-dynamodb-local
+
+    # Environment values for all container
+    environment:
+      - GO111MODULE: "on"
+      - TEST_RESULTS: /tmp/test-results # path to where test results will be saved
+      - AWS_REGION: "test-region"
+      - DYNAMODB_ENDPOINT: "http://localhost:8000"
+      - DYNAMODB_TABLE_NAME: "User"
+
+jobs:
+  test:
+    executor:
+      name: default
+    steps:
+      - checkout
+      - run: mkdir -p $TEST_RESULTS
+      - restore_cache:
+          name: Restore go modules cache
+          keys:
+              - v1-mod-{{ .Branch }}-{{ checksum "go.mod" }}
+      - run:
+          name: Vendoring
+          command: go mod download
+      # カバレッジの集計などをするためのツールのインストール
+      - run:
+          name: Install test report tool
+          command: go get github.com/jstemmer/go-junit-report
+      - save_cache:
+          name: Save go modules cache
+          key: v1-mod-{{ .Branch }}-{{ checksum "go.mod" }}
+          paths:
+              - /go/pkg/mod/cache
+      - run:
+          name: Wait for DynamoDB
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 8000 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for DyanmoDB Local && exit 1
+      - run:
+          name: Run all unit tests
+          command: |
+            trap "go-junit-report <${TEST_RESULTS}/go-test.out > ${TEST_RESULTS}/go-test-report.xml" EXIT
+            go test ./... | tee ${TEST_RESULTS}/go-test.out
+      - store_artifacts:
+          path: /tmp/test-results
+          destination: raw-test-output
+      - store_test_results:
+          path: /tmp/test-results
+
+workflows:
+  build-and-test:
+    jobs:
+      - test
