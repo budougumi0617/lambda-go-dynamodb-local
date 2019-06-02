@@ -32,7 +32,7 @@ func nextRandom() string {
 	return strconv.Itoa(int(1e9 + r%1e9))[1:]
 }
 
-func TestExData(t *testing.T) {
+func TestGetUser(t *testing.T) {
 	ep := os.Getenv("DYNAMODB_ENDPOINT")
 	r := os.Getenv("AWS_REGION")
 	if len(r) == 0 {

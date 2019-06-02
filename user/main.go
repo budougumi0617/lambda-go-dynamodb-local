@@ -13,7 +13,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 )
 
-// User :
+// User is user struct.
 type User struct {
 	ID   int    `json:"id"`
 	Name string `json:"name"`
@@ -24,7 +24,7 @@ func generateHandler(endpoint, region, tableName string) func(events.APIGatewayP
 		// Request
 		id, _ := request.PathParameters["id"]
 
-		// DynamoDB
+		// Connect DynamoDB
 		sess := session.Must(session.NewSession())
 		config := aws.NewConfig().WithRegion(region)
 		if len(endpoint) > 0 {
@@ -51,8 +51,7 @@ func generateHandler(endpoint, region, tableName string) func(events.APIGatewayP
 		}
 
 		user := User{}
-		err = dynamodbattribute.Unmarshal(&dynamodb.AttributeValue{M: response.Item}, &user)
-		if err != nil {
+		if err := dynamodbattribute.Unmarshal(&dynamodb.AttributeValue{M: response.Item}, &user); err != nil {
 			return events.APIGatewayProxyResponse{}, err
 		}
 
@@ -71,13 +70,13 @@ func generateHandler(endpoint, region, tableName string) func(events.APIGatewayP
 
 func main() {
 	// Environment variables
-	endpoint := os.Getenv("DYNAMODB_ENDPOINT")
-	region := os.Getenv("AWS_REGION")
-	if len(region) == 0 {
-		region = "ap-northeast-1"
+	ep := os.Getenv("DYNAMODB_ENDPOINT")
+	r := os.Getenv("AWS_REGION")
+	if len(r) == 0 {
+		r = "ap-northeast-1"
 	}
-	tableName := os.Getenv("DYNAMODB_TABLE_NAME")
+	tn := os.Getenv("DYNAMODB_TABLE_NAME")
 
-	h := generateHandler(endpoint, region, tableName)
+	h := generateHandler(ep, r, tn)
 	lambda.Start(h)
 }
